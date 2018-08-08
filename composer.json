@@ -1,0 +1,31 @@
+{
+  "name": "benmorel/xml-streamer",
+  "description": "Stream large XML files as DOM nodes with low memory consumption",
+  "type": "library",
+  "keywords": [
+    "XML",
+    "XMLReader",
+    "DOM"
+  ],
+  "license": "MIT",
+  "require": {
+    "php": ">=7.1",
+    "ext-dom": "*",
+    "ext-xmlreader": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "7.*",
+    "php-coveralls/php-coveralls": "2.*",
+    "ext-simplexml": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "BenMorel\\XMLStreamer\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "BenMorel\\XMLStreamer\\Tests\\": "tests/"
+    }
+  }
+}
