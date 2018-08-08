@@ -101,6 +101,7 @@ class XMLStreamerTest extends TestCase
             ['unclosed-root-with-contents.xml', 'parser error : Extra content at the end of the document'],
 
             ['products-unclosed-element.xml', 'parser error : Opening and ending tag mismatch'],
+            ['products-invalid-entity.xml', 'parser error : xmlParseEntityRef: no name'],
         ];
     }
 
