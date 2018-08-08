@@ -28,10 +28,12 @@ class XMLStreamerTest extends TestCase
         $streamedNodes = [];
 
         $streamer = new XMLStreamer(...$nodeNames);
-        $streamer->stream($xmlFile, function(\DOMDocument $document) use ($nodeNames, & $streamedNodes) {
-            $this->assertSame(end($nodeNames), $document->documentElement->nodeName);
+        $streamer->stream($xmlFile, function(\DOMNode $node) use ($nodeNames, & $streamedNodes) {
+            $this->assertSame(end($nodeNames), $node->nodeName);
 
-            $simpleXmlElement = simplexml_import_dom($document);
+            $document = new \DOMDocument();
+            $document->appendChild($node);
+            $simpleXmlElement = simplexml_import_dom($node);
             $streamedNodes[] = $this->convertSimpleXMLElement($simpleXmlElement);
         });
 

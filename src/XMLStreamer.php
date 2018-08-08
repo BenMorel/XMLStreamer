@@ -66,10 +66,7 @@ class XMLStreamer
 
                 if ($xmlReader->depth === $this->depth) {
                     $domNode = $this->expand($xmlReader);
-
-                    $document = new \DOMDocument();
-                    $document->appendChild($domNode);
-                    $callback($document);
+                    $callback($domNode);
                     $nodeCount++;
 
                     if (! $this->next($xmlReader)) {
