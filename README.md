@@ -2,6 +2,11 @@
 
 Stream large XML files as individual DOM nodes with low memory consumption.
 
+[![Build Status](https://secure.travis-ci.org/BenMorel/XMLStreamer.svg?branch=master)](http://travis-ci.org/BenMorel/XMLStreamer)
+[![Coverage Status](https://coveralls.io/repos/BenMorel/XMLStreamer/badge.svg?branch=master)](https://coveralls.io/r/BenMorel/XMLStreamer?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/benmorel/xml-streamer/v/stable)](https://packagist.org/packages/benmorel/xml-streamer)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
+
 ## Installation
 
 This library is installable via [Composer](https://getcomposer.org/):
