@@ -10,16 +10,22 @@ namespace BenMorel\XMLStreamer;
 class XMLStreamer
 {
     /**
+     * The hierarchy of names of the nodes to stream, starting at the root node.
+     *
      * @var string[]
      */
     private $nodeNames;
 
     /**
+     * The depth of the nodes to stream.
+     *
      * @var int
      */
     private $depth;
 
     /**
+     * The transient error handler used to catch PHP errors in XMLReader.
+     *
      * @var \Closure
      */
     private $errorHandler;
@@ -27,7 +33,7 @@ class XMLStreamer
     /**
      * XMLStreamer constructor.
      *
-     * @param string ...$nodeNames The node names that lead to the streamable nodes.
+     * @param string ...$nodeNames The hierarchy of names of the nodes to stream.
      */
     public function __construct(string ...$nodeNames)
     {
@@ -40,12 +46,15 @@ class XMLStreamer
     }
 
     /**
-     * @param string   $file
-     * @param callable $callback
+     * Streams an XML file.
+     *
+     * @param string   $file     The XML file path.
+     * @param callable $callback A function that will be called with each DOMNode object.
      *
      * @return int The number of nodes streamed.
      *
      * @throws \RuntimeException If an error occurs.
+     *                           Note that an error can occur after some nodes have already been streamed.
      */
     public function stream(string $file, callable $callback) : int
     {
@@ -88,6 +97,8 @@ class XMLStreamer
     }
 
     /**
+     * Runs XMLReader::open(), catching errors and throwing them as exceptions.
+     *
      * @param \XMLReader $xmlReader
      *
      * @param string $file
