@@ -76,7 +76,7 @@ class XMLStreamerTest extends TestCase
      *
      * @return void
      */
-    public function testStreamInvalidDocument(string $xmlFile, $x, string $expectedMessage) : void
+    public function testStreamInvalidDocument(string $xmlFile, string $expectedMessage) : void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage($expectedMessage);
@@ -88,30 +88,29 @@ class XMLStreamerTest extends TestCase
     }
 
     /**
-     * @todo no xml declaration
-     * @todo broken child
-     *
      * @return array
      */
     public function providerStreamInvalidDocument() : array
     {
         return [
-            ['empty.xml', ['parent', 'child'], 'parser error : Extra content at the end of the document'],
-            ['no-root.xml', ['parent', 'child'], 'parser error : Extra content at the end of the document'],
+            ['empty.xml', 'parser error : Extra content at the end of the document'],
+            ['no-root.xml', 'parser error : Extra content at the end of the document'],
 
-            ['unclosed-root-no-contents.xml', ['root', 'item'], 'parser error : Extra content at the end of the document'],
+            ['unclosed-root-no-contents.xml', 'parser error : Extra content at the end of the document'],
 
-            ['unclosed-root-with-contents.xml', ['products', 'product'], 'parser error : Extra content at the end of the document'],
+            ['unclosed-root-with-contents.xml', 'parser error : Extra content at the end of the document'],
 
-            ['products-unclosed-element.xml', ['products', 'product'], 'parser error : Opening and ending tag mismatch'],
+            ['products-unclosed-element.xml', 'parser error : Opening and ending tag mismatch'],
         ];
     }
 
     /**
      * @expectedException \RuntimeException
      * @expectedExceptionMessage Unable to open source data
+     *
+     * @return void
      */
-    public function testStreamNonexistentFile()
+    public function testStreamNonexistentFile() : void
     {
         $xmlFile = $this->getFileName('nonexistent.xml');
 
