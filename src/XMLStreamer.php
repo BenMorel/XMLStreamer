@@ -54,36 +54,34 @@ class XMLStreamer
 
         $this->open($xmlReader, $file);
 
-        if ($this->read($xmlReader)) {
-            for (;;) {
-                if ($xmlReader->nodeType === \XMLReader::ELEMENT) {
-                    if ($xmlReader->name !== $this->nodeNames[$xmlReader->depth]) {
-                        if (! $this->next($xmlReader)) {
-                            break;
-                        }
-
-                        continue;
+        for (;;) {
+            if ($xmlReader->nodeType === \XMLReader::ELEMENT) {
+                if ($xmlReader->name !== $this->nodeNames[$xmlReader->depth]) {
+                    if (! $this->next($xmlReader)) {
+                        break;
                     }
 
-                    if ($xmlReader->depth === $this->depth) {
-                        $domNode = $this->expand($xmlReader);
+                    continue;
+                }
 
-                        $document = new \DOMDocument();
-                        $document->appendChild($domNode);
-                        $callback($document);
-                        $nodeCount++;
+                if ($xmlReader->depth === $this->depth) {
+                    $domNode = $this->expand($xmlReader);
 
-                        if (! $this->next($xmlReader)) {
-                            break;
-                        }
+                    $document = new \DOMDocument();
+                    $document->appendChild($domNode);
+                    $callback($document);
+                    $nodeCount++;
 
-                        continue;
+                    if (! $this->next($xmlReader)) {
+                        break;
                     }
-                }
 
-                if (! $this->read($xmlReader)) {
-                    break;
+                    continue;
                 }
+            }
+
+            if (! $this->read($xmlReader)) {
+                break;
             }
         }
 
