@@ -64,7 +64,7 @@ Let's say you have a product feed containing a list of one million products, in 
 </feed>
 ```
 
-To read it product by product, you instantiate an `XMLStreamer` with the path to a `<product>`:
+To read it product by product, you instantiate an `XMLStreamer` with the path to a `<product>` element:
 
 ```php
 use BenMorel\XMLStreamer\XMLStreamer;
@@ -74,7 +74,7 @@ $streamer = new XMLStreamer('feed', 'products', 'product');
 
 Any element in the document that does not match this path will be ignored.
 
-You can then proceed to streaming the file to a callback function, that will receive a [DOMNode](http://php.net/manual/en/class.domnode.php) object for each `<product>` element:
+You can then proceed to streaming the file to a callback function, that will receive a [DOMNode](http://php.net/manual/en/class.domnode.php) object for each `<product>`:
 
 ```php
 $streamer->stream('product-feed.xml', function(\DOMNode $product) {
@@ -117,6 +117,6 @@ If the document is valid, after all nodes have been processed, `stream()` return
 
 ## Error handling
 
-If an error occurs at any point (error while reading the file, or malformed document), an exception is thrown.
+If an error occurs at any point (error opening or reading the file, malformed document), an exception is thrown.
 
 Note that the streaming may have already been started when the exception is thrown, so your callback function may have already been called with a number of nodes.
