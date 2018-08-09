@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace BenMorel\XMLStreamer\Tests;
 
 use BenMorel\XMLStreamer\XMLStreamer;
+use BenMorel\XMLStreamer\XMLStreamerException;
+
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -78,7 +80,7 @@ class XMLStreamerTest extends TestCase
      */
     public function testStreamInvalidDocument(string $xmlFile, string $expectedMessage) : void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(XMLStreamerException::class);
         $this->expectExceptionMessage($expectedMessage);
 
         $xmlFile = $this->getFileName($xmlFile);
@@ -106,7 +108,7 @@ class XMLStreamerTest extends TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException \BenMorel\XMLStreamer\XMLStreamerException
      * @expectedExceptionMessage Unable to open source data
      *
      * @return void

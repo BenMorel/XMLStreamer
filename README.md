@@ -117,6 +117,6 @@ If the document is valid, after all nodes have been processed, `stream()` return
 
 ## Error handling
 
-If an error occurs at any point (error opening or reading the file, malformed document), an exception is thrown.
+If an error occurs at any point (error opening or reading the file, malformed document), an `XMLStreamerException` is thrown.
 
 Note that the streaming may have already been started when the exception is thrown, so your callback function may have already been called with a number of nodes.

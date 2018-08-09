@@ -41,7 +41,7 @@ class XMLStreamer
         $this->depth = count($nodeNames) - 1;
 
         $this->errorHandler = function($severity, $message) {
-            throw new \RuntimeException($message);
+            throw new XMLStreamerException($message);
         };
     }
 
@@ -53,8 +53,7 @@ class XMLStreamer
      *
      * @return int The number of nodes streamed.
      *
-     * @throws \RuntimeException If an error occurs.
-     *                           Note that an error can occur after some nodes have already been streamed.
+     * @throws XMLStreamerException If an error occurs at any point, before or after the streaming has started.
      */
     public function stream(string $file, callable $callback) : int
     {
@@ -102,6 +101,8 @@ class XMLStreamer
      * @param \XMLReader $xmlReader
      *
      * @param string $file
+     *
+     * @throws XMLStreamerException
      */
     private function open(\XMLReader $xmlReader, string $file) : void
     {
@@ -120,6 +121,8 @@ class XMLStreamer
      * @param \XMLReader $xmlReader
      *
      * @return \DOMNode
+     *
+     * @throws XMLStreamerException
      */
     private function expand(\XMLReader $xmlReader) : \DOMNode
     {
@@ -140,6 +143,8 @@ class XMLStreamer
      * @param \XMLReader $xmlReader
      *
      * @return bool
+     *
+     * @throws XMLStreamerException
      */
     private function read(\XMLReader $xmlReader) : bool
     {
@@ -160,6 +165,8 @@ class XMLStreamer
      * @param \XMLReader $xmlReader
      *
      * @return bool
+     *
+     * @throws XMLStreamerException
      */
     private function next(\XMLReader $xmlReader) : bool
     {
