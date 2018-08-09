@@ -51,6 +51,10 @@ class XMLStreamerTest extends TestCase
         return [
             ['products-empty.xml', ['products', 'product'], []],
 
+            ['products-depth-0.xml', ['product'], [
+                ['id' => '1', 'name' => 'foo'],
+            ]],
+
             ['products-depth-1.xml', ['products', 'product'], [
                 ['id' => '1', 'name' => 'foo'],
                 ['id' => '2', 'name' => 'bar'],
@@ -65,6 +69,8 @@ class XMLStreamerTest extends TestCase
             ['products-depth-2.xml', ['root', 'discontinued-products', 'product'], [
                 ['id' => '1234', 'name' => 'oldie'],
             ]],
+
+            ['products-depth-0.xml', ['root'], []],
 
             ['products-depth-1.xml', ['root', 'product'], []],
             ['products-depth-1.xml', ['products', 'item'], []],

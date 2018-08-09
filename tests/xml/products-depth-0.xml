@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- It makes no sense to use XMLStreamer for this use case, but there is no technical reason to prevent it -->
+<product>
+    <id>1</id>
+    <name>foo</name>
+</product>
