@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
+    <metadata>
+        <product-count>3</product-count>
+    </metadata>
+
     <products>
         <product>
             <id>1</id>
@@ -13,5 +17,16 @@
             <id>3</id>
             <name>baz</name>
         </product>
+
+        <other-tag>
+            <foo>bar</foo>
+        </other-tag>
     </products>
+
+    <discontinued-products>
+        <product>
+            <id>1234</id>
+            <name>oldie</name>
+        </product>
+    </discontinued-products>
 </root>

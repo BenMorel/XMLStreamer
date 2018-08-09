@@ -61,6 +61,10 @@ class XMLStreamerTest extends TestCase
                 ['id' => '3', 'name' => 'baz'],
             ]],
 
+            ['products-depth-2.xml', ['root', 'discontinued-products', 'product'], [
+                ['id' => '1234', 'name' => 'oldie'],
+            ]],
+
             ['products-depth-1.xml', ['root', 'product'], []],
             ['products-depth-1.xml', ['products', 'item'], []],
 
