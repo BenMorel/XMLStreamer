@@ -30,7 +30,7 @@ class XMLStreamerTest extends TestCase
         $streamedNodes = [];
 
         $streamer = new XMLStreamer(...$nodeNames);
-        $streamer->stream($xmlFile, function(\DOMNode $node) use ($nodeNames, & $streamedNodes) {
+        $nodeCount = $streamer->stream($xmlFile, function(\DOMNode $node) use ($nodeNames, & $streamedNodes) {
             $this->assertSame(end($nodeNames), $node->nodeName);
 
             $document = new \DOMDocument();
@@ -40,6 +40,7 @@ class XMLStreamerTest extends TestCase
         });
 
         $this->assertSame($nodes, $streamedNodes);
+        $this->assertCount($nodeCount, $streamedNodes);
     }
 
     /**
