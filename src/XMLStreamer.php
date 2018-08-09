@@ -34,9 +34,15 @@ class XMLStreamer
      * XMLStreamer constructor.
      *
      * @param string ...$nodeNames The hierarchy of names of the nodes to stream.
+     *
+     * @throws \InvalidArgumentException If no node names are given.
      */
     public function __construct(string ...$nodeNames)
     {
+        if (count($nodeNames) === 0) {
+            throw new \InvalidArgumentException('Missing node names.');
+        }
+
         $this->nodeNames = $nodeNames;
         $this->depth = count($nodeNames) - 1;
 

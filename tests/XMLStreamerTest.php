@@ -119,6 +119,14 @@ class XMLStreamerTest extends TestCase
     }
 
     /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testConstructWithNoParameters()
+    {
+        new XMLStreamer();
+    }
+
+    /**
      * @param string $xmlFile
      *
      * @return string
