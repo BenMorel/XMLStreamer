@@ -93,7 +93,17 @@ $streamer->stream('product-feed.xml', function(\DOMNode $product) {
 });
 ```
 
-You can also use [simplexml_import_dom()](http://php.net/manual/en/function.simplexml-import-dom.php) if you prefer to work with SimpleXML (SimpleXML also requires that you wrap your node in a `DOMDocument` before importing it).
+If you prefer to work with SimpleXML, you can use [simplexml_import_dom()](http://php.net/manual/en/function.simplexml-import-dom.php). SimpleXML also requires that you wrap your node in a `DOMDocument` before importing it:
+
+```php
+$streamer->stream('product-feed.xml', function(\DOMNode $product) {
+    $document = new \DOMDocument();
+    $document->appendChild($product);
+    $element = simplexml_import_dom($product);
+
+    echo $element->name; // foo, ..., bar
+});
+```
 
 ### Return value
 
