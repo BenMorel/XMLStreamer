@@ -111,9 +111,19 @@ $streamer->stream('product-feed.xml', function(\DOMNode $product) {
 
 This requires the [SimpleXML](http://php.net/manual/en/book.simplexml.php) extension, which is enabled by default.
 
+### Limiting the number of nodes
+
+If you need to get just a preview of the XML file, you can set the maximum number of nodes to stream:
+
+```php
+$streamer->setMaxNodes(10);
+```
+
+With this configuration, `XMLStreamer` would call your callback function at most 10 times, and ignore further entries.
+
 ### Return value
 
-If the document is valid, after all nodes have been processed, `stream()` returns the number of imported nodes.
+After all nodes have been processed, `stream()` returns the number of streamed nodes.
 
 ## Error handling
 

@@ -31,6 +31,13 @@ class XMLStreamer
     private $errorHandler;
 
     /**
+     * The maximum number of nodes to stream, optional.
+     *
+     * @var int|null
+     */
+    private $maxNodes;
+
+    /**
      * XMLStreamer constructor.
      *
      * @param string ...$nodeNames The hierarchy of names of the nodes to stream.
@@ -49,6 +56,26 @@ class XMLStreamer
         $this->errorHandler = function($severity, $message) {
             throw new XMLStreamerException($message);
         };
+    }
+
+    /**
+     * Sets the maximum number of nodes to stream.
+     *
+     * This can be useful to get a preview of an XML file.
+     *
+     * @param int $maxNodes
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function setMaxNodes(int $maxNodes) : void
+    {
+        if ($maxNodes < 1) {
+            throw new \InvalidArgumentException('Max nodes cannot be less than 1.');
+        }
+
+        $this->maxNodes = $maxNodes;
     }
 
     /**
@@ -82,6 +109,10 @@ class XMLStreamer
                     $domNode = $this->expand($xmlReader);
                     $callback($domNode);
                     $nodeCount++;
+
+                    if ($nodeCount === $this->maxNodes) {
+                        break;
+                    }
 
                     if (! $this->next($xmlReader)) {
                         break;

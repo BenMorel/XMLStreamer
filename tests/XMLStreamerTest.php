@@ -18,18 +18,24 @@ class XMLStreamerTest extends TestCase
      * @dataProvider providerStream
      *
      * @param string   $xmlFile   The XML file name.
+     * @param int|null $maxNodes  The maximum number of nodes to stream, or null for no maximum.
      * @param string[] $nodeNames The node names to construct the XMLStreamer with.
      * @param array    $nodes     The expected node contents.
      *
      * @return void
      */
-    public function testStream(string $xmlFile, array $nodeNames, array $nodes) : void
+    public function testStream(string $xmlFile, ?int $maxNodes, array $nodeNames, array $nodes) : void
     {
         $xmlFile = $this->getFileName($xmlFile);
 
         $streamedNodes = [];
 
         $streamer = new XMLStreamer(...$nodeNames);
+
+        if ($maxNodes !== null) {
+            $streamer->setMaxNodes($maxNodes);
+        }
+
         $nodeCount = $streamer->stream($xmlFile, function(\DOMNode $node) use ($nodeNames, & $streamedNodes) {
             $this->assertSame(end($nodeNames), $node->nodeName);
 
@@ -49,35 +55,54 @@ class XMLStreamerTest extends TestCase
     public function providerStream() : array
     {
         return [
-            ['products-empty.xml', ['products', 'product'], []],
+            ['products-empty.xml', null, ['products', 'product'], []],
 
-            ['products-depth-0.xml', ['product'], [
+            ['products-depth-0.xml', null, ['product'], [
                 ['id' => '1', 'name' => 'foo'],
             ]],
 
-            ['products-depth-1.xml', ['products', 'product'], [
+            ['products-depth-1.xml', null, ['products', 'product'], [
                 ['id' => '1', 'name' => 'foo'],
                 ['id' => '2', 'name' => 'bar'],
             ]],
 
-            ['products-depth-2.xml', ['root', 'products', 'product'], [
+            ['products-depth-2.xml', null, ['root', 'products', 'product'], [
                 ['id' => '1', 'name' => 'foo'],
                 ['id' => '2', 'name' => 'bar'],
                 ['id' => '3', 'name' => 'baz'],
             ]],
 
-            ['products-depth-2.xml', ['root', 'discontinued-products', 'product'], [
+            ['products-depth-2.xml', null, ['root', 'discontinued-products', 'product'], [
                 ['id' => '1234', 'name' => 'oldie'],
             ]],
 
-            ['products-depth-0.xml', ['root'], []],
+            ['products-depth-0.xml', null, ['root'], []],
 
-            ['products-depth-1.xml', ['root', 'product'], []],
-            ['products-depth-1.xml', ['products', 'item'], []],
+            ['products-depth-1.xml', null, ['root', 'product'], []],
+            ['products-depth-1.xml', null, ['products', 'item'], []],
 
-            ['products-depth-2.xml', ['products', 'product'], []],
-            ['products-depth-2.xml', ['root', 'product'], []],
-            ['products-depth-2.xml', ['root', 'products', 'item'], []],
+            ['products-depth-2.xml', null, ['products', 'product'], []],
+            ['products-depth-2.xml', null, ['root', 'product'], []],
+            ['products-depth-2.xml', null, ['root', 'products', 'item'], []],
+
+            // max nodes
+            ['products-depth-2.xml', 1, ['root', 'products', 'product'], [
+                ['id' => '1', 'name' => 'foo'],
+            ]],
+            ['products-depth-2.xml', 2, ['root', 'products', 'product'], [
+                ['id' => '1', 'name' => 'foo'],
+                ['id' => '2', 'name' => 'bar'],
+            ]],
+            ['products-depth-2.xml', 3, ['root', 'products', 'product'], [
+                ['id' => '1', 'name' => 'foo'],
+                ['id' => '2', 'name' => 'bar'],
+                ['id' => '3', 'name' => 'baz'],
+            ]],
+            ['products-depth-2.xml', 4, ['root', 'products', 'product'], [
+                ['id' => '1', 'name' => 'foo'],
+                ['id' => '2', 'name' => 'bar'],
+                ['id' => '3', 'name' => 'baz'],
+            ]],
         ];
     }
 
@@ -120,10 +145,40 @@ class XMLStreamerTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Missing node names.
+     *
+     * @return void
      */
-    public function testConstructWithNoParameters()
+    public function testConstructorWithNoParameters() : void
     {
         new XMLStreamer();
+    }
+
+    /**
+     * @dataProvider providerSetMaxNodesWithInvalidNumber
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Max nodes cannot be less than 1.
+     *
+     * @param int $maxNodes
+     *
+     * @return void
+     */
+    public function testSetMaxNodesWithInvalidNumber(int $maxNodes) : void
+    {
+        $streamer = new XMLStreamer('a', 'b');
+        $streamer->setMaxNodes($maxNodes);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerSetMaxNodesWithInvalidNumber() : array
+    {
+        return [
+            [-2],
+            [-1],
+            [0]
+        ];
     }
 
     /**
