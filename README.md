@@ -109,6 +109,8 @@ $streamer->stream('product-feed.xml', function(\DOMNode $product) {
 });
 ```
 
+This requires the [SimpleXML](http://php.net/manual/en/book.simplexml.php) extension, which is enabled by default.
+
 ### Return value
 
 If the document is valid, after all nodes have been processed, `stream()` returns the number of imported nodes.
