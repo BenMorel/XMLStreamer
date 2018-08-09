@@ -100,30 +100,16 @@ class XMLStreamerTest extends TestCase
     public function providerStreamInvalidDocument() : array
     {
         return [
+            ['nonexistent.xml', 'Unable to open source data'],
             ['empty.xml', 'parser error : Extra content at the end of the document'],
             ['no-root.xml', 'parser error : Extra content at the end of the document'],
 
             ['unclosed-root-no-contents.xml', 'parser error : Extra content at the end of the document'],
-
             ['unclosed-root-with-contents.xml', 'parser error : Extra content at the end of the document'],
 
             ['products-unclosed-element.xml', 'parser error : Opening and ending tag mismatch'],
             ['products-invalid-entity.xml', 'parser error : xmlParseEntityRef: no name'],
         ];
-    }
-
-    /**
-     * @expectedException \BenMorel\XMLStreamer\XMLStreamerException
-     * @expectedExceptionMessage Unable to open source data
-     *
-     * @return void
-     */
-    public function testStreamNonexistentFile() : void
-    {
-        $xmlFile = $this->getFileName('nonexistent.xml');
-
-        $streamer = new XMLStreamer('products', 'product');
-        $streamer->stream($xmlFile, function() {});
     }
 
     /**
