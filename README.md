@@ -82,7 +82,9 @@ $streamer->stream('product-feed.xml', function(\DOMNode $product) {
 });
 ```
 
-You can query this `DOMNode` directly, or wrap it in a [DOMDocument](http://php.net/manual/en/class.domdocument.php) for more possibilities:
+### Querying with DOM
+
+You can query the `DOMNode` directly, or wrap it in a [DOMDocument](http://php.net/manual/en/class.domdocument.php) for more possibilities:
 
 ```php
 $streamer->stream('product-feed.xml', function(\DOMNode $product) {
@@ -92,6 +94,8 @@ $streamer->stream('product-feed.xml', function(\DOMNode $product) {
     echo $document->getElementsByTagName('name')->item(0)->textContent; // foo, ..., bar
 });
 ```
+
+### Querying with SimpleXML
 
 If you prefer to work with SimpleXML, you can use [simplexml_import_dom()](http://php.net/manual/en/function.simplexml-import-dom.php). SimpleXML also requires that you wrap your node in a `DOMDocument` before importing it:
 
