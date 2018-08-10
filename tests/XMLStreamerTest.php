@@ -107,6 +107,54 @@ class XMLStreamerTest extends TestCase
     }
 
     /**
+     * @dataProvider providerSetEncoding
+     *
+     * @param string      $xmlFile
+     * @param string|null $setEncoding
+     * @param string|null $expectedExceptionMessage
+     *
+     * @return void
+     */
+    public function testSetEncoding(string $xmlFile, ?string $setEncoding, ?string $expectedExceptionMessage) : void
+    {
+        $xmlFile = $this->getFileName($xmlFile);
+
+        $streamer = new XMLStreamer('products', 'product');
+        $streamer->setEncoding($setEncoding);
+
+        if ($expectedExceptionMessage !== null) {
+            $this->expectException(XMLStreamerException::class);
+            $this->expectExceptionMessage($expectedExceptionMessage);
+        }
+
+        $productName = null;
+
+        $streamer->stream($xmlFile, function(\DOMNode $node) use (& $productName) {
+            $document = new \DOMDocument();
+            $document->appendChild($node);
+            $element = simplexml_import_dom($node);
+            $productName = (string) $element->name;
+        });
+
+        if ($expectedExceptionMessage === null) {
+            $this->assertSame('äëïöü', $productName);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function providerSetEncoding() : array
+    {
+        return [
+            ['iso-8859-1.xml', null, null],
+            ['iso-8859-1.xml', 'UTF-8', null], // overriding does nothing here
+            ['iso-8859-1-no-encoding.xml', null, 'parser error : Input is not proper UTF-8, indicate encoding !'],
+            ['iso-8859-1-no-encoding.xml', 'ISO-8859-1', null],
+        ];
+    }
+
+    /**
      * @dataProvider providerStreamInvalidDocument
      *
      * @param string $xmlFile
