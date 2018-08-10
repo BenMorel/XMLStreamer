@@ -31,11 +31,18 @@ class XMLStreamer
     private $errorHandler;
 
     /**
-     * The maximum number of nodes to stream, optional.
+     * The maximum number of nodes to stream. Optional.
      *
      * @var int|null
      */
     private $maxNodes;
+
+    /**
+     * The encoding of the file, if missing from the XML declaration, or to override it. Optional.
+     *
+     * @var string|null
+     */
+    private $encoding;
 
     /**
      * XMLStreamer constructor.
@@ -76,6 +83,20 @@ class XMLStreamer
         }
 
         $this->maxNodes = $maxNodes;
+    }
+
+    /**
+     * Sets the encoding of the file.
+     *
+     * This can be used if the encoding is missing from the XML declaration, or to override it.
+     *
+     * @param string|null $encoding
+     *
+     * @return void
+     */
+    public function setEncoding(?string $encoding) : void
+    {
+        $this->encoding = $encoding;
     }
 
     /**
@@ -136,8 +157,7 @@ class XMLStreamer
      * Runs XMLReader::open(), catching errors and throwing them as exceptions.
      *
      * @param \XMLReader $xmlReader
-     *
-     * @param string $file
+     * @param string     $file
      *
      * @throws XMLStreamerException
      */
@@ -146,7 +166,7 @@ class XMLStreamer
         set_error_handler($this->errorHandler);
 
         try {
-            $xmlReader->open($file);
+            $xmlReader->open($file, $this->encoding);
         } finally {
             restore_error_handler();
         }
