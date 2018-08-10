@@ -111,6 +111,12 @@ $streamer->stream('product-feed.xml', function(\DOMNode $product) {
 
 This requires the [SimpleXML](http://php.net/manual/en/book.simplexml.php) extension, which is enabled by default.
 
+### Return value
+
+After all nodes have been processed, `stream()` returns the number of streamed nodes.
+
+## Configuration options
+
 ### Limiting the number of nodes
 
 If you need to get just a preview of the XML file, you can set the maximum number of nodes to stream:
@@ -121,9 +127,21 @@ $streamer->setMaxNodes(10);
 
 With this configuration, `XMLStreamer` would call your callback function at most 10 times, and ignore further entries.
 
-### Return value
+### Configuring the encoding
 
-After all nodes have been processed, `stream()` returns the number of streamed nodes.
+The encoding of the source file is automatically read from the XML declaration:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+```
+
+If your XML file is missing the `encoding`, you can specify it manually:
+
+```php
+$streamer->setEncoding('ISO-8859-1');
+```
+
+Note that this only specifies the input file encoding. The `DOMNode` output is always UTF-8.
 
 ## Error handling
 
