@@ -74,20 +74,20 @@ $streamer = new XMLStreamer('feed', 'products', 'product');
 
 Any element in the document that does not match this path will be ignored.
 
-You can then proceed to streaming the file to a callback function, that will receive a [DOMNode](http://php.net/manual/en/class.domnode.php) object for each `<product>`:
+You can then proceed to streaming the file to a callback function, that will receive a [DOMElement](http://php.net/manual/en/class.domelement.php) object for each `<product>`:
 
 ```php
-$streamer->stream('product-feed.xml', function(\DOMNode $product) {
+$streamer->stream('product-feed.xml', function(\DOMElement $product) {
     // ...
 });
 ```
 
 ### Querying with DOM
 
-You can query the `DOMNode` directly, or wrap it in a [DOMDocument](http://php.net/manual/en/class.domdocument.php) for more possibilities:
+You can query the `DOMElement` directly, or wrap it in a [DOMDocument](http://php.net/manual/en/class.domdocument.php) for more possibilities:
 
 ```php
-$streamer->stream('product-feed.xml', function(\DOMNode $product) {
+$streamer->stream('product-feed.xml', function(\DOMElement $product) {
     $document = new \DOMDocument();
     $document->appendChild($product);
 
@@ -100,7 +100,7 @@ $streamer->stream('product-feed.xml', function(\DOMNode $product) {
 If you prefer to work with SimpleXML, you can use [simplexml_import_dom()](http://php.net/manual/en/function.simplexml-import-dom.php). SimpleXML also requires that you wrap your node in a `DOMDocument` before importing it:
 
 ```php
-$streamer->stream('product-feed.xml', function(\DOMNode $product) {
+$streamer->stream('product-feed.xml', function(\DOMElement $product) {
     $document = new \DOMDocument();
     $document->appendChild($product);
     $element = simplexml_import_dom($product);
@@ -141,7 +141,7 @@ If your XML file is missing the `encoding`, you can specify it manually:
 $streamer->setEncoding('ISO-8859-1');
 ```
 
-Note that this only specifies the input file encoding. The `DOMNode` output is always UTF-8.
+Note that this only specifies the input file encoding. The `DOMElement` output is always UTF-8.
 
 ## Error handling
 

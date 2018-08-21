@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace BenMorel\XMLStreamer;
 
 /**
- * Streams an XML file, calling a callback function with a DOM node.
+ * Streams an XML file, calling a callback function with a DOM element.
  */
 class XMLStreamer
 {
@@ -103,7 +103,7 @@ class XMLStreamer
      * Streams an XML file.
      *
      * @param string   $file     The XML file path.
-     * @param callable $callback A function that will be called with each DOMNode object.
+     * @param callable $callback A function that will be called with each DOMElement object.
      *
      * @return int The number of nodes streamed.
      *

@@ -36,12 +36,12 @@ class XMLStreamerTest extends TestCase
             $streamer->setMaxNodes($maxNodes);
         }
 
-        $nodeCount = $streamer->stream($xmlFile, function(\DOMNode $node) use ($nodeNames, & $streamedNodes) {
-            $this->assertSame(end($nodeNames), $node->nodeName);
+        $nodeCount = $streamer->stream($xmlFile, function(\DOMElement $element) use ($nodeNames, & $streamedNodes) {
+            $this->assertSame(end($nodeNames), $element->nodeName);
 
             $document = new \DOMDocument();
-            $document->appendChild($node);
-            $simpleXmlElement = simplexml_import_dom($node);
+            $document->appendChild($element);
+            $simpleXmlElement = simplexml_import_dom($element);
             $streamedNodes[] = $this->convertSimpleXMLElement($simpleXmlElement);
         });
 
@@ -129,10 +129,10 @@ class XMLStreamerTest extends TestCase
 
         $productName = null;
 
-        $streamer->stream($xmlFile, function(\DOMNode $node) use (& $productName) {
+        $streamer->stream($xmlFile, function(\DOMElement $element) use (& $productName) {
             $document = new \DOMDocument();
-            $document->appendChild($node);
-            $element = simplexml_import_dom($node);
+            $document->appendChild($element);
+            $element = simplexml_import_dom($element);
             $productName = (string) $element->name;
         });
 
