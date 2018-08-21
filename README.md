@@ -78,16 +78,6 @@ You can then proceed to streaming the file to a callback function, that will rec
 
 ```php
 $streamer->stream('product-feed.xml', function(\DOMElement $product) {
-    // ...
-});
-```
-
-### Querying with DOM
-
-You can query the `DOMElement` directly:
-
-```php
-$streamer->stream('product-feed.xml', function(\DOMElement $product) {
     echo $product->getElementsByTagName('name')->item(0)->textContent; // foo, ..., bar
 });
 ```
