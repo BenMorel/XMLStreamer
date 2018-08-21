@@ -1,6 +1,6 @@
 # XML Streamer
 
-Stream large XML files as individual DOM nodes with low memory consumption.
+Stream large XML files as individual DOM elements with low memory consumption.
 
 [![Build Status](https://secure.travis-ci.org/BenMorel/XMLStreamer.svg?branch=master)](http://travis-ci.org/BenMorel/XMLStreamer)
 [![Coverage Status](https://coveralls.io/repos/BenMorel/XMLStreamer/badge.svg?branch=master)](https://coveralls.io/r/BenMorel/XMLStreamer?branch=master)
@@ -94,7 +94,7 @@ $streamer->stream('product-feed.xml', function(\DOMElement $product) {
 
 ### Querying with SimpleXML
 
-If you prefer to work with SimpleXML, you can use [simplexml_import_dom()](http://php.net/manual/en/function.simplexml-import-dom.php). SimpleXML requires that you wrap your node in a `DOMDocument` before importing it:
+If you prefer to work with SimpleXML, you can use [simplexml_import_dom()](http://php.net/manual/en/function.simplexml-import-dom.php). SimpleXML requires that you wrap your element in a `DOMDocument` before importing it:
 
 ```php
 $streamer->stream('product-feed.xml', function(\DOMElement $product) {
