@@ -84,20 +84,17 @@ $streamer->stream('product-feed.xml', function(\DOMElement $product) {
 
 ### Querying with DOM
 
-You can query the `DOMElement` directly, or wrap it in a [DOMDocument](http://php.net/manual/en/class.domdocument.php) for more possibilities:
+You can query the `DOMElement` directly:
 
 ```php
 $streamer->stream('product-feed.xml', function(\DOMElement $product) {
-    $document = new \DOMDocument();
-    $document->appendChild($product);
-
-    echo $document->getElementsByTagName('name')->item(0)->textContent; // foo, ..., bar
+    echo $product->getElementsByTagName('name')->item(0)->textContent; // foo, ..., bar
 });
 ```
 
 ### Querying with SimpleXML
 
-If you prefer to work with SimpleXML, you can use [simplexml_import_dom()](http://php.net/manual/en/function.simplexml-import-dom.php). SimpleXML also requires that you wrap your node in a `DOMDocument` before importing it:
+If you prefer to work with SimpleXML, you can use [simplexml_import_dom()](http://php.net/manual/en/function.simplexml-import-dom.php). SimpleXML requires that you wrap your node in a `DOMDocument` before importing it:
 
 ```php
 $streamer->stream('product-feed.xml', function(\DOMElement $product) {
