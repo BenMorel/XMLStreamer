@@ -17,36 +17,36 @@ class XMLStreamerTest extends TestCase
     /**
      * @dataProvider providerStream
      *
-     * @param string   $xmlFile   The XML file name.
-     * @param int|null $maxNodes  The maximum number of nodes to stream, or null for no maximum.
-     * @param string[] $nodeNames The node names to construct the XMLStreamer with.
-     * @param array    $nodes     The expected node contents.
+     * @param string   $xmlFile      The XML file name.
+     * @param int|null $maxElements  The maximum number of elements to stream, or null for no maximum.
+     * @param string[] $elementNames The element names to construct the XMLStreamer with.
+     * @param array    $elements     The expected element contents.
      *
      * @return void
      */
-    public function testStream(string $xmlFile, ?int $maxNodes, array $nodeNames, array $nodes) : void
+    public function testStream(string $xmlFile, ?int $maxElements, array $elementNames, array $elements) : void
     {
         $xmlFile = $this->getFileName($xmlFile);
 
-        $streamedNodes = [];
+        $streamedElements = [];
 
-        $streamer = new XMLStreamer(...$nodeNames);
+        $streamer = new XMLStreamer(...$elementNames);
 
-        if ($maxNodes !== null) {
-            $streamer->setMaxNodes($maxNodes);
+        if ($maxElements !== null) {
+            $streamer->setMaxElements($maxElements);
         }
 
-        $nodeCount = $streamer->stream($xmlFile, function(\DOMElement $element) use ($nodeNames, & $streamedNodes) {
-            $this->assertSame(end($nodeNames), $element->nodeName);
+        $elementCount = $streamer->stream($xmlFile, function(\DOMElement $element) use ($elementNames, & $streamedElements) {
+            $this->assertSame(end($elementNames), $element->nodeName);
 
             $document = new \DOMDocument();
             $document->appendChild($element);
             $simpleXmlElement = simplexml_import_dom($element);
-            $streamedNodes[] = $this->convertSimpleXMLElement($simpleXmlElement);
+            $streamedElements[] = $this->convertSimpleXMLElement($simpleXmlElement);
         });
 
-        $this->assertSame($nodes, $streamedNodes);
-        $this->assertCount($nodeCount, $streamedNodes);
+        $this->assertSame($elements, $streamedElements);
+        $this->assertCount($elementCount, $streamedElements);
     }
 
     /**
@@ -85,7 +85,7 @@ class XMLStreamerTest extends TestCase
             ['products-depth-2.xml', null, ['root', 'product'], []],
             ['products-depth-2.xml', null, ['root', 'products', 'item'], []],
 
-            // max nodes
+            // max elements
             ['products-depth-2.xml', 1, ['root', 'products', 'product'], [
                 ['id' => '1', 'name' => 'foo'],
             ]],
@@ -193,7 +193,7 @@ class XMLStreamerTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Missing node names.
+     * @expectedExceptionMessage Missing element names.
      *
      * @return void
      */
@@ -203,24 +203,24 @@ class XMLStreamerTest extends TestCase
     }
 
     /**
-     * @dataProvider providerSetMaxNodesWithInvalidNumber
+     * @dataProvider providerSetMaxElementsWithInvalidNumber
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Max nodes cannot be less than 1.
+     * @expectedExceptionMessage Max elements cannot be less than 1.
      *
-     * @param int $maxNodes
+     * @param int $maxElements
      *
      * @return void
      */
-    public function testSetMaxNodesWithInvalidNumber(int $maxNodes) : void
+    public function testSetMaxElementsWithInvalidNumber(int $maxElements) : void
     {
         $streamer = new XMLStreamer('a', 'b');
-        $streamer->setMaxNodes($maxNodes);
+        $streamer->setMaxElements($maxElements);
     }
 
     /**
      * @return array
      */
-    public function providerSetMaxNodesWithInvalidNumber() : array
+    public function providerSetMaxElementsWithInvalidNumber() : array
     {
         return [
             [-2],

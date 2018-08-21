@@ -10,14 +10,14 @@ namespace BenMorel\XMLStreamer;
 class XMLStreamer
 {
     /**
-     * The hierarchy of names of the nodes to stream, starting at the root node.
+     * The hierarchy of names of the elements to stream, starting at the root element.
      *
      * @var string[]
      */
-    private $nodeNames;
+    private $elementNames;
 
     /**
-     * The depth of the nodes to stream.
+     * The depth of the elements to stream.
      *
      * @var int
      */
@@ -31,11 +31,11 @@ class XMLStreamer
     private $errorHandler;
 
     /**
-     * The maximum number of nodes to stream. Optional.
+     * The maximum number of elements to stream. Optional.
      *
      * @var int|null
      */
-    private $maxNodes;
+    private $maxElements;
 
     /**
      * The encoding of the file, if missing from the XML declaration, or to override it. Optional.
@@ -47,18 +47,18 @@ class XMLStreamer
     /**
      * XMLStreamer constructor.
      *
-     * @param string ...$nodeNames The hierarchy of names of the nodes to stream.
+     * @param string ...$elementNames The hierarchy of names of the elements to stream.
      *
-     * @throws \InvalidArgumentException If no node names are given.
+     * @throws \InvalidArgumentException If no element names are given.
      */
-    public function __construct(string ...$nodeNames)
+    public function __construct(string ...$elementNames)
     {
-        if (count($nodeNames) === 0) {
-            throw new \InvalidArgumentException('Missing node names.');
+        if (count($elementNames) === 0) {
+            throw new \InvalidArgumentException('Missing element names.');
         }
 
-        $this->nodeNames = $nodeNames;
-        $this->depth = count($nodeNames) - 1;
+        $this->elementNames = $elementNames;
+        $this->depth = count($elementNames) - 1;
 
         $this->errorHandler = function($severity, $message) {
             throw new XMLStreamerException($message);
@@ -66,23 +66,23 @@ class XMLStreamer
     }
 
     /**
-     * Sets the maximum number of nodes to stream.
+     * Sets the maximum number of elements to stream.
      *
      * This can be useful to get a preview of an XML file.
      *
-     * @param int $maxNodes
+     * @param int $maxElements
      *
      * @return void
      *
      * @throws \InvalidArgumentException
      */
-    public function setMaxNodes(int $maxNodes) : void
+    public function setMaxElements(int $maxElements) : void
     {
-        if ($maxNodes < 1) {
-            throw new \InvalidArgumentException('Max nodes cannot be less than 1.');
+        if ($maxElements < 1) {
+            throw new \InvalidArgumentException('Max elements cannot be less than 1.');
         }
 
-        $this->maxNodes = $maxNodes;
+        $this->maxElements = $maxElements;
     }
 
     /**
@@ -105,20 +105,20 @@ class XMLStreamer
      * @param string   $file     The XML file path.
      * @param callable $callback A function that will be called with each DOMElement object.
      *
-     * @return int The number of nodes streamed.
+     * @return int The number of elements streamed.
      *
      * @throws XMLStreamerException If an error occurs at any point, before or after the streaming has started.
      */
     public function stream(string $file, callable $callback) : int
     {
-        $nodeCount = 0;
+        $elementCount = 0;
         $xmlReader = new \XMLReader();
 
         $this->open($xmlReader, $file);
 
         for (;;) {
             if ($xmlReader->nodeType === \XMLReader::ELEMENT) {
-                if ($xmlReader->name !== $this->nodeNames[$xmlReader->depth]) {
+                if ($xmlReader->name !== $this->elementNames[$xmlReader->depth]) {
                     if (! $this->next($xmlReader)) {
                         break;
                     }
@@ -127,11 +127,11 @@ class XMLStreamer
                 }
 
                 if ($xmlReader->depth === $this->depth) {
-                    $domNode = $this->expand($xmlReader);
-                    $callback($domNode);
-                    $nodeCount++;
+                    $domElement = $this->expand($xmlReader);
+                    $callback($domElement);
+                    $elementCount++;
 
-                    if ($nodeCount === $this->maxNodes) {
+                    if ($elementCount === $this->maxElements) {
                         break;
                     }
 
@@ -150,7 +150,7 @@ class XMLStreamer
 
         $xmlReader->close();
 
-        return $nodeCount;
+        return $elementCount;
     }
 
     /**

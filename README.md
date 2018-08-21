@@ -100,16 +100,16 @@ This requires the [SimpleXML](http://php.net/manual/en/book.simplexml.php) exten
 
 ### Return value
 
-After all nodes have been processed, `stream()` returns the number of streamed nodes.
+After all elements have been processed, `stream()` returns the number of streamed elements.
 
 ## Configuration options
 
-### Limiting the number of nodes
+### Limiting the number of elements
 
-If you need to get just a preview of the XML file, you can set the maximum number of nodes to stream:
+If you need to get just a preview of the XML file, you can set the maximum number of elements to stream:
 
 ```php
-$streamer->setMaxNodes(10);
+$streamer->setMaxElements(10);
 ```
 
 With this configuration, `XMLStreamer` would call your callback function at most 10 times, and ignore further entries.
@@ -134,4 +134,4 @@ Note that this only specifies the input file encoding. The `DOMElement` output i
 
 If an error occurs at any point (error opening or reading the file, malformed document), an `XMLStreamerException` is thrown.
 
-Note that the streaming may have already been started when the exception is thrown, so your callback function may have already been called with a number of nodes.
+Note that the streaming may have already been started when the exception is thrown, so your callback function may have already been called with a number of elements.
