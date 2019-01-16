@@ -60,7 +60,7 @@ class XMLStreamer
         $this->elementNames = $elementNames;
         $this->depth = count($elementNames) - 1;
 
-        $this->errorHandler = function($severity, $message) {
+        $this->errorHandler = static function($severity, $message) {
             throw new XMLStreamerException($message);
         };
     }
