@@ -24,13 +24,6 @@ class XMLStreamer
     private $depth;
 
     /**
-     * The transient error handler used to catch PHP errors in XMLReader.
-     *
-     * @var \Closure
-     */
-    private $errorHandler;
-
-    /**
      * The maximum number of elements to stream. Optional.
      *
      * @var int|null
@@ -59,10 +52,6 @@ class XMLStreamer
 
         $this->elementNames = $elementNames;
         $this->depth = count($elementNames) - 1;
-
-        $this->errorHandler = static function($severity, $message) {
-            throw new XMLStreamerException($message);
-        };
     }
 
     /**
@@ -107,27 +96,27 @@ class XMLStreamer
      *
      * @return int The number of elements streamed.
      *
-     * @throws XMLStreamerException If an error occurs at any point, before or after the streaming has started.
+     * @throws XMLReaderException If an error occurs at any point, before or after the streaming has started.
      */
     public function stream(string $file, callable $callback) : int
     {
         $elementCount = 0;
-        $xmlReader = new \XMLReader();
+        $xmlReader = new XMLReader();
 
-        $this->open($xmlReader, $file);
+        $xmlReader->open($file, $this->encoding);
 
         for (;;) {
-            if ($xmlReader->nodeType === \XMLReader::ELEMENT) {
-                if ($xmlReader->name !== $this->elementNames[$xmlReader->depth]) {
-                    if (! $this->next($xmlReader)) {
+            if ($xmlReader->nodeType() === \XMLReader::ELEMENT) {
+                if ($xmlReader->name() !== $this->elementNames[$xmlReader->depth()]) {
+                    if (! $xmlReader->next()) {
                         break;
                     }
 
                     continue;
                 }
 
-                if ($xmlReader->depth === $this->depth) {
-                    $domElement = $this->expand($xmlReader);
+                if ($xmlReader->depth() === $this->depth) {
+                    $domElement = $xmlReader->expand();
                     $callback($domElement);
                     $elementCount++;
 
@@ -135,7 +124,7 @@ class XMLStreamer
                         break;
                     }
 
-                    if (! $this->next($xmlReader)) {
+                    if (! $xmlReader->next()) {
                         break;
                     }
 
@@ -143,7 +132,7 @@ class XMLStreamer
                 }
             }
 
-            if (! $this->read($xmlReader)) {
+            if (! $xmlReader->read()) {
                 break;
             }
         }
@@ -151,90 +140,5 @@ class XMLStreamer
         $xmlReader->close();
 
         return $elementCount;
-    }
-
-    /**
-     * Runs XMLReader::open(), catching errors and throwing them as exceptions.
-     *
-     * @param \XMLReader $xmlReader
-     * @param string     $file
-     *
-     * @throws XMLStreamerException
-     */
-    private function open(\XMLReader $xmlReader, string $file) : void
-    {
-        set_error_handler($this->errorHandler);
-
-        try {
-            $xmlReader->open($file, $this->encoding);
-        } finally {
-            restore_error_handler();
-        }
-    }
-
-    /**
-     * Runs XMLReader::expand(), catching errors and throwing them as exceptions.
-     *
-     * @param \XMLReader $xmlReader
-     *
-     * @return \DOMNode
-     *
-     * @throws XMLStreamerException
-     */
-    private function expand(\XMLReader $xmlReader) : \DOMNode
-    {
-        set_error_handler($this->errorHandler);
-
-        try {
-            $result = $xmlReader->expand();
-        } finally {
-            restore_error_handler();
-        }
-
-        return $result;
-    }
-
-    /**
-     * Runs XMLReader::read(), catching errors and throwing them as exceptions.
-     *
-     * @param \XMLReader $xmlReader
-     *
-     * @return bool
-     *
-     * @throws XMLStreamerException
-     */
-    private function read(\XMLReader $xmlReader) : bool
-    {
-        set_error_handler($this->errorHandler);
-
-        try {
-            $result = $xmlReader->read();
-        } finally {
-            restore_error_handler();
-        }
-
-        return $result;
-    }
-
-    /**
-     * Runs XMLReader::next(), catching errors and throwing them as exceptions.
-     *
-     * @param \XMLReader $xmlReader
-     *
-     * @return bool
-     *
-     * @throws XMLStreamerException
-     */
-    private function next(\XMLReader $xmlReader) : bool
-    {
-        set_error_handler($this->errorHandler);
-
-        try {
-            $result = $xmlReader->next();
-        } finally {
-            restore_error_handler();
-        }
-
-        return $result;
     }
 }

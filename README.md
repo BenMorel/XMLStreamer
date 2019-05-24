@@ -132,6 +132,6 @@ Note that this only specifies the input file encoding. The `DOMElement` output i
 
 ## Error handling
 
-If an error occurs at any point (error opening or reading the file, malformed document), an `XMLStreamerException` is thrown.
+If an error occurs at any point (error opening or reading the file, malformed document), an `XMLReaderException` is thrown.
 
 Note that the streaming may have already been started when the exception is thrown, so your callback function may have already been called with a number of elements.
