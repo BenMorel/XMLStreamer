@@ -74,12 +74,13 @@ $streamer = new XMLStreamer('feed', 'products', 'product');
 
 Any element in the document that does not match this path will be ignored.
 
-You can then proceed to streaming the file to a callback function, that will receive a [DOMElement](http://php.net/manual/en/class.domelement.php) object for each `<product>`:
+You can then proceed to streaming the file with a generator, that will yield a [DOMElement](http://php.net/manual/en/class.domelement.php) object for each `<product>`:
 
 ```php
-$streamer->stream('product-feed.xml', function(\DOMElement $product) {
+foreach ($streamer->stream('product-feed.xml') as $product) {
+    /** @var DOMElement $product */
     echo $product->getElementsByTagName('name')->item(0)->textContent; // foo, ..., bar
-});
+}
 ```
 
 ### Querying with SimpleXML
@@ -87,20 +88,28 @@ $streamer->stream('product-feed.xml', function(\DOMElement $product) {
 If you prefer to work with SimpleXML, you can use [simplexml_import_dom()](http://php.net/manual/en/function.simplexml-import-dom.php). SimpleXML requires that you wrap your element in a `DOMDocument` before importing it:
 
 ```php
-$streamer->stream('product-feed.xml', function(\DOMElement $product) {
+foreach ($streamer->stream('product-feed.xml') as $product) {
+    /** @var DOMElement $product */
     $document = new \DOMDocument();
     $document->appendChild($product);
     $element = simplexml_import_dom($product);
 
     echo $element->name; // foo, ..., bar
-});
+}
 ```
 
 This requires the [SimpleXML](http://php.net/manual/en/book.simplexml.php) extension, which is enabled by default.
 
 ### Return value
 
-After all elements have been processed, `stream()` returns the number of streamed elements.
+After all elements have been processed, the generator returns the number of streamed elements:
+
+```php
+$products = $streamer->stream('product-feed.xml');
+
+foreach ($products as $product) { /* ... */ }
+$productCount = $products->getReturn();
+```
 
 ## Configuration options
 
