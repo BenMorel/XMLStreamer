@@ -121,7 +121,7 @@ If you need to get just a preview of the XML file, you can set the maximum numbe
 $streamer->setMaxElements(10);
 ```
 
-With this configuration, `XMLStreamer` would call your callback function at most 10 times, and ignore further entries.
+With this configuration, `XMLStreamer` would yield at most 10 elements, and ignore further entries.
 
 ### Configuring the encoding
 
