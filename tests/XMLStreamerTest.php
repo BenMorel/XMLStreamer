@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace BenMorel\XMLStreamer\Tests;
 
+use BenMorel\XMLStreamer\XMLReaderException;
 use BenMorel\XMLStreamer\XMLStreamer;
-use BenMorel\XMLStreamer\XMLStreamerException;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -126,7 +126,7 @@ class XMLStreamerTest extends TestCase
         $streamer->setEncoding($setEncoding);
 
         if ($expectedExceptionMessage !== null) {
-            $this->expectException(XMLStreamerException::class);
+            $this->expectException(XMLReaderException::class);
             $this->expectExceptionMessage($expectedExceptionMessage);
         }
 
@@ -171,7 +171,7 @@ class XMLStreamerTest extends TestCase
 
         $streamer = new XMLStreamer('a', 'b');
 
-        $this->expectException(XMLStreamerException::class);
+        $this->expectException(XMLReaderException::class);
         $this->expectExceptionMessage($expectedMessage);
 
         foreach ($streamer->stream($xmlFile) as $element);
