@@ -36,14 +36,16 @@ class XMLStreamerTest extends TestCase
             $streamer->setMaxElements($maxElements);
         }
 
-        $elementCount = $streamer->stream($xmlFile, function(\DOMElement $element) use ($elementNames, & $streamedElements) {
+        foreach ($generator = $streamer->stream($xmlFile) as $element) {
             $this->assertSame(end($elementNames), $element->nodeName);
 
             $document = new \DOMDocument();
             $document->appendChild($element);
             $simpleXmlElement = simplexml_import_dom($element);
             $streamedElements[] = $this->convertSimpleXMLElement($simpleXmlElement);
-        });
+        }
+
+        $elementCount = $generator->getReturn();
 
         $this->assertSame($elements, $streamedElements);
         $this->assertCount($elementCount, $streamedElements);
@@ -129,12 +131,12 @@ class XMLStreamerTest extends TestCase
 
         $productName = null;
 
-        $streamer->stream($xmlFile, function(\DOMElement $element) use (& $productName) {
+        foreach ($streamer->stream($xmlFile) as $element) {
             $document = new \DOMDocument();
             $document->appendChild($element);
             $element = simplexml_import_dom($element);
             $productName = (string) $element->name;
-        });
+        }
 
         if ($expectedExceptionMessage === null) {
             $this->assertSame('äëïöü', $productName);
@@ -170,7 +172,7 @@ class XMLStreamerTest extends TestCase
         $xmlFile = $this->getFileName($xmlFile);
 
         $streamer = new XMLStreamer('a', 'b');
-        $streamer->stream($xmlFile, function() {});
+        foreach ($streamer->stream($xmlFile) as $element);
     }
 
     /**

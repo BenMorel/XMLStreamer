@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace BenMorel\XMLStreamer;
 
+use DOMElement;
+use Generator;
+
 /**
  * Streams an XML file, calling a callback function with a DOM element.
  */
@@ -94,11 +97,11 @@ class XMLStreamer
      * @param string   $file     The XML file path.
      * @param callable $callback A function that will be called with each DOMElement object.
      *
-     * @return int The number of elements streamed.
+     * @return Generator<DOMElement> The streamed elements. The generator returns the number of elements streamed.
      *
      * @throws XMLReaderException If an error occurs at any point, before or after the streaming has started.
      */
-    public function stream(string $file, callable $callback) : int
+    public function stream(string $file) : Generator
     {
         $elementCount = 0;
         $xmlReader = new XMLReader();
@@ -116,11 +119,9 @@ class XMLStreamer
                 }
 
                 if ($xmlReader->depth() === $this->depth) {
-                    $domElement = $xmlReader->expand();
-                    $callback($domElement);
-                    $elementCount++;
+                    yield $xmlReader->expand();
 
-                    if ($elementCount === $this->maxElements) {
+                    if (++$elementCount === $this->maxElements) {
                         break;
                     }
 
