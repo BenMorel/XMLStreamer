@@ -167,12 +167,13 @@ class XMLStreamerTest extends TestCase
      */
     public function testStreamInvalidDocument(string $xmlFile, string $expectedMessage) : void
     {
-        $this->expectException(XMLStreamerException::class);
-        $this->expectExceptionMessage($expectedMessage);
-
         $xmlFile = $this->getFileName($xmlFile);
 
         $streamer = new XMLStreamer('a', 'b');
+
+        $this->expectException(XMLStreamerException::class);
+        $this->expectExceptionMessage($expectedMessage);
+
         foreach ($streamer->stream($xmlFile) as $element);
     }
 
