@@ -7,6 +7,7 @@ namespace BenMorel\XMLStreamer\Tests;
 use BenMorel\XMLStreamer\XMLStreamer;
 use BenMorel\XMLStreamer\XMLStreamerException;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -194,20 +195,18 @@ class XMLStreamerTest extends TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Missing element names.
-     *
      * @return void
      */
     public function testConstructorWithNoParameters() : void
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Missing element names.');
+
         new XMLStreamer();
     }
 
     /**
      * @dataProvider providerSetMaxElementsWithInvalidNumber
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Max elements cannot be less than 1.
      *
      * @param int $maxElements
      *
@@ -216,6 +215,9 @@ class XMLStreamerTest extends TestCase
     public function testSetMaxElementsWithInvalidNumber(int $maxElements) : void
     {
         $streamer = new XMLStreamer('a', 'b');
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Max elements cannot be less than 1.');
         $streamer->setMaxElements($maxElements);
     }
 
