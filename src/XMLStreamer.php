@@ -17,28 +17,22 @@ class XMLStreamer
      *
      * @var string[]
      */
-    private $elementNames;
+    private array $elementNames;
 
     /**
      * The depth of the elements to stream.
-     *
-     * @var int
      */
-    private $depth;
+    private int $depth;
 
     /**
      * The maximum number of elements to stream. Optional.
-     *
-     * @var int|null
      */
-    private $maxElements;
+    private ?int $maxElements = null;
 
     /**
      * The encoding of the file, if missing from the XML declaration, or to override it. Optional.
-     *
-     * @var string|null
      */
-    private $encoding;
+    private ?string $encoding = null;
 
     /**
      * XMLStreamer constructor.
@@ -94,8 +88,7 @@ class XMLStreamer
     /**
      * Streams an XML file.
      *
-     * @param string   $file     The XML file path.
-     * @param callable $callback A function that will be called with each DOMElement object.
+     * @param string $file The XML file path.
      *
      * @return Generator<DOMElement> The streamed elements. The generator returns the number of elements streamed.
      *

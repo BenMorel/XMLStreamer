@@ -11,17 +11,13 @@ class XMLReader
 {
     /**
      * The wrapped native XMLReader instance.
-     *
-     * @var \XMLReader
      */
-    private $xmlReader;
+    private \XMLReader $xmlReader;
 
     /**
      * The transient error handler used to catch PHP errors triggered in the native XMLReader class.
-     *
-     * @var \Closure
      */
-    private $errorHandler;
+    private \Closure $errorHandler;
 
     /**
      * XMLReader constructor.
