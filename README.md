@@ -19,7 +19,7 @@ composer require benmorel/xml-streamer
 
 This library requires:
 
-- PHP 7.1 or later
+- PHP 7.4 or later
 - the [DOM](http://php.net/manual/en/book.dom.php) extension
 - the [XMLReader](http://php.net/manual/en/book.xmlreader.php) extension
 
