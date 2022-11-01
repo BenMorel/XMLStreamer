@@ -56,10 +56,6 @@ class XMLStreamer
      *
      * This can be useful to get a preview of an XML file.
      *
-     * @param int $maxElements
-     *
-     * @return void
-     *
      * @throws \InvalidArgumentException
      */
     public function setMaxElements(int $maxElements) : void
@@ -75,10 +71,6 @@ class XMLStreamer
      * Sets the encoding of the file.
      *
      * This can be used if the encoding is missing from the XML declaration, or to override it.
-     *
-     * @param string|null $encoding
-     *
-     * @return void
      */
     public function setEncoding(?string $encoding) : void
     {

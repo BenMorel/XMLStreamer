@@ -17,10 +17,6 @@ class XMLReaderException extends Exception
      * This method should never be called, as XMLReader triggers a PHP warning every time something goes wrong, and
      * this warning is caught and converted to an exception. If for any reason though, an XMLReader method unexpectedly
      * returned false and no PHP warning was triggered with an explanation, this method would be called.
-     *
-     * @param string $method
-     *
-     * @return XMLReaderException
      */
     public static function unknownError(string $method) : self
     {

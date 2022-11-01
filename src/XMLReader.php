@@ -34,8 +34,6 @@ class XMLReader
 
     /**
      * Returns the depth of the node in the tree, starting at zero.
-     *
-     * @return int
      */
     public function depth() : int
     {
@@ -46,8 +44,6 @@ class XMLReader
      * Returns the qualified name of the current node.
      *
      * Returns an empty string if the current node does not have a name.
-     *
-     * @return string
      */
     public function name() : string
     {
@@ -56,8 +52,6 @@ class XMLReader
 
     /**
      * Returns the type of the current node, as an XMLReader::* constant.
-     *
-     * @return int
      */
     public function nodeType() : int
     {
@@ -91,8 +85,6 @@ class XMLReader
     /**
      * Closes the input the XMLReader object is currently parsing.
      *
-     * @return void
-     *
      * @throws XMLReaderException
      */
     public function close() : void
@@ -112,10 +104,6 @@ class XMLReader
 
     /**
      * Returns a copy of the current node as a DOM object.
-     *
-     * @param \DOMNode|null $baseNode
-     *
-     * @return \DOMNode
      *
      * @throws XMLReaderException
      */
@@ -159,8 +147,6 @@ class XMLReader
 
     /**
      * Moves the cursor to the next node in the document, skipping all subtrees.
-     *
-     * @param string|null $localName
      *
      * @return bool True if successful, false is there are no more nodes.
      *
