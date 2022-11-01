@@ -112,7 +112,10 @@ class XMLStreamer
                 }
 
                 if ($xmlReader->depth() === $this->depth) {
-                    yield $xmlReader->expand();
+                    /** @var DOMElement $domElement */
+                    $domElement = $xmlReader->expand();
+
+                    yield $domElement;
 
                     if (++$elementCount === $this->maxElements) {
                         break;

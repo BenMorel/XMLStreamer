@@ -26,7 +26,8 @@ class XMLReader
     {
         $this->xmlReader = new \XMLReader();
 
-        $this->errorHandler = static function($severity, $message) {
+        /** @psalm-suppress UnusedClosureParam */
+        $this->errorHandler = static function(int $severity, string $message) : void {
             throw new XMLReaderException($message);
         };
     }
@@ -123,6 +124,7 @@ class XMLReader
         set_error_handler($this->errorHandler);
 
         try {
+            /** @psalm-suppress PossiblyNullArgument https://github.com/vimeo/psalm/pull/8641 */
             $result = $this->xmlReader->expand($baseNode);
         } finally {
             restore_error_handler();
