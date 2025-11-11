@@ -16,6 +16,8 @@ final class XMLReader
 
     /**
      * The transient error handler used to catch PHP errors triggered in the native XMLReader class.
+     *
+     * @var \Closure(int, string): never
      */
     private \Closure $errorHandler;
 
@@ -26,7 +28,6 @@ final class XMLReader
     {
         $this->xmlReader = new \XMLReader();
 
-        /** @psalm-suppress UnusedClosureParam */
         $this->errorHandler = static function(int $severity, string $message) : void {
             throw new XMLReaderException($message);
         };
@@ -112,7 +113,6 @@ final class XMLReader
         set_error_handler($this->errorHandler);
 
         try {
-            /** @psalm-suppress PossiblyNullArgument https://github.com/vimeo/psalm/pull/8641 */
             $result = $this->xmlReader->expand($baseNode);
         } finally {
             restore_error_handler();

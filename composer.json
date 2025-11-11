@@ -17,7 +17,7 @@
     "phpunit/phpunit": "^8.0 || ^9.0",
     "php-coveralls/php-coveralls": "^2.4",
     "ext-simplexml": "*",
-    "vimeo/psalm": "4.29.0"
+    "vimeo/psalm": "6.13.1"
   },
   "autoload": {
     "psr-4": {
