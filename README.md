@@ -35,7 +35,7 @@ existing code, etc.), `y` is incremented.
 
 **When a breaking change is introduced, a new `0.x` version cycle is always started.**
 
-It is therefore safe to lock your project to a given release cycle, such as `0.5.*`.
+It is therefore safe to lock your project to a given release cycle, such as `0.6.*`.
 
 If you need to upgrade to a newer release cycle, check the [release history](https://github.com/BenMorel/XMLStreamer/releases)
 for a list of changes introduced by each further `0.x.0` version.
