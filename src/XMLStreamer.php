@@ -10,7 +10,7 @@ use Generator;
 /**
  * Streams an XML file, calling a callback function with a DOM element.
  */
-class XMLStreamer
+final class XMLStreamer
 {
     /**
      * The hierarchy of names of the elements to stream, starting at the root element.

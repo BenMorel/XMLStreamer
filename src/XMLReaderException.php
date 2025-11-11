@@ -9,7 +9,7 @@ use Exception;
 /**
  * Exception thrown when an error occurs while reading an XML file.
  */
-class XMLReaderException extends Exception
+final class XMLReaderException extends Exception
 {
     /**
      * Creates an exception representing an unknown error.

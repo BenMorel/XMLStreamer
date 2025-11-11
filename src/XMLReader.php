@@ -7,7 +7,7 @@ namespace BenMorel\XMLStreamer;
 /**
  * Wrapper for the native XMLReader, that throws exceptions instead of triggering PHP errors.
  */
-class XMLReader
+final class XMLReader
 {
     /**
      * The wrapped native XMLReader instance.
